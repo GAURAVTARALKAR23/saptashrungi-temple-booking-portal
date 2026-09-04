@@ -59,6 +59,9 @@ public class User implements UserDetails {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        if (role == null) {
+            role = UserRole.USER;
+        }
     }
 
     @PreUpdate
@@ -68,12 +71,17 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override
